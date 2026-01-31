@@ -57,4 +57,13 @@ public class ReservationService {
         }
     }
 
+    @Transactional
+    public void cancelReserved(Long reservationId, Long uid) {
+
+        Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, uid)
+                .orElseThrow(() -> new IllegalArgumentException("예약이 없거나 본인 예약이 아닙니다."));
+
+        reservationRepository.delete(reservation);
+    }
+
 }

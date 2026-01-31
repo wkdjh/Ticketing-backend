@@ -13,8 +13,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     // 예매하기, save는 그냥 주어지는구나?
 
-
     // 이미 예약이 되어있는지 확인
     boolean existsByShowIdAndSeatsId(Long mid, Long sid);
+
+    // 예매 취소하기 위한 예약 목록 찾기
+    Optional<Reservation> findByIdAndUserId(Long reservationId, Long userId);
 
 }
