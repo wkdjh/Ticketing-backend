@@ -4,11 +4,12 @@ import Test.Toyproject.seats.entity.Seats;
 import Test.Toyproject.show.entity.Show;
 import Test.Toyproject.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "Reservation")
 public class Reservation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

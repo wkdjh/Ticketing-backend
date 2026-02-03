@@ -27,4 +27,7 @@ public interface ShowRepository extends JpaRepository<Show, Long> {
 
     // 공연 임박 순 가져오기
     List<Show> findAllByOrderByStartDateTimeAsc();
+
+    // 나의 예매 공연 정보 가져오기
+    List<Show> findByIdIn(List<Long> ids);
 }

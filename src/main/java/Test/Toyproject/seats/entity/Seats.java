@@ -2,7 +2,9 @@ package Test.Toyproject.seats.entity;
 
 import Test.Toyproject.show.entity.Show;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Seats {
     @Id
