@@ -11,8 +11,8 @@ public record MyReservationDetailResponse (
 ) {
     public static MyReservationDetailResponse from(Show show, Seats seats) {
         return new MyReservationDetailResponse(
-                seats.getSeat_row(),
-                seats.getSeat_column(),
+                seats.getSeatRow(),
+                seats.getSeatColumn(),
                 show.getPrice()
         );
     }

@@ -2,6 +2,7 @@ package Test.Toyproject.user.service;
 
 import Test.Toyproject.user.entity.User;
 import Test.Toyproject.user.repository.UserRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ public class CustomUserDetailsService {
 
     public static class CustomUserDetails implements UserDetails {
 
+        @Getter
         private final Long id;
         private final String email;
         private final String password;
@@ -46,7 +48,6 @@ public class CustomUserDetailsService {
             );
         }
 
-        public Long getId() { return id; }
         public String getNickName() { return nickName; }
 
         @Override

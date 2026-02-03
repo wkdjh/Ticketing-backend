@@ -26,4 +26,16 @@ public class Reservation {
     @JoinColumn(name = "sid", nullable = false)
     private Seats seats;
 
+    protected Reservation() {} // JPA 기본 생성자
+
+    public Reservation(Show show, User user, Seats seats) {
+        this.show = show;
+        this.user = user;
+        this.seats = seats;
+    }
+
+    // 취향: 더 명확하게 하고 싶으면 factory로
+    public static Reservation of(Show show, User user, Seats seats) {
+        return new Reservation(show, user, seats);
+    }
 }

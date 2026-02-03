@@ -11,11 +11,11 @@ public class Seats {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private char seat_row;
+    @Column(nullable = false, name = "seat_row")
+    private char seatRow;
 
-    @Column(nullable = false)
-    private int seat_column;
+    @Column(nullable = false, name = "seat_column")
+    private int seatColumn;
 
     // Show의 id랑 fk
     /*
