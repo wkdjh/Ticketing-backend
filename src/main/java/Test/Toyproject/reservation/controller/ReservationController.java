@@ -1,15 +1,14 @@
 package Test.Toyproject.reservation.controller;
 
 import Test.Toyproject.reservation.dto.ReservationRequestDto;
+import Test.Toyproject.reservation.dto.ReservationResponseDto;
 import Test.Toyproject.reservation.service.ReservationService;
 import Test.Toyproject.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,6 +17,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
+    // 공연 예매
     @PostMapping
     public ResponseEntity<ReservationResponseDto> reserve(
             @RequestBody ReservationRequestDto req,
@@ -30,6 +30,14 @@ public class ReservationController {
         return ResponseEntity.ok(new ReservationResponseDto(reservationId));
     }
 
-    public record ReservationResponseDto(Long reservationId) {}
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<Void> cancel(
+            @PathVariable Long reservationId,
+            @AuthenticationPrincipal CustomUserDetailsService.CustomUserDetails userDetails
+    ) {
+        Long uid = userDetails.getId();
+        reservationService.cancelReserved(reservationId, uid);
+        return ResponseEntity.noContent().build(); // ✅ 204 No Content
+    }
 
 }
