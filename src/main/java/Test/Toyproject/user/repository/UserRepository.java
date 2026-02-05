@@ -48,6 +48,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
+
     // 이건 필요없나?
 //    Optional<User> findByNickName(String nickName);
 

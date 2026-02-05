@@ -4,6 +4,7 @@ import Test.Toyproject.jwt.JwtProvider;
 import Test.Toyproject.user.dto.request.LoginRequest;
 import Test.Toyproject.user.dto.request.SignUpRequest;
 import Test.Toyproject.user.dto.response.AuthResponse;
+import Test.Toyproject.user.dto.response.UserMeResponseDto;
 import Test.Toyproject.user.entity.User;
 import Test.Toyproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,17 @@ public class AuthService {
         String refresh = jwtProvider.createRefreshToken(user.getId());
 
         return new AuthResponse(access, refresh, user.getId(), user.getEmail(), user.getNickName());
+    }
+
+    @Transactional(readOnly = true)
+    public UserMeResponseDto me(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+
+        return new UserMeResponseDto(
+                user.getId(),
+                user.getEmail(),
+                user.getNickName()
+        );
     }
 }
