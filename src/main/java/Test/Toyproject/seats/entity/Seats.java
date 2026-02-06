@@ -17,6 +17,10 @@ public class Seats {
     @Column(nullable = false, name = "seat_column")
     private int seatColumn;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SeatStatus seatStatus;
+
     // Show의 id랑 fk
     /*
 

@@ -12,8 +12,10 @@ public class GetShowResponseDto {
     private Long id;
     private String title;
     private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private String location;
     private String posterURL;
+    private int price;
     private LocalDateTime createdAt;
 
     // entity -> dto 변환
@@ -23,8 +25,10 @@ public class GetShowResponseDto {
                 show.getId(),
                 show.getTitle(),
                 show.getStartDateTime(),
-                show.getPosterURL(),
+                show.getEndDateTime(),
                 show.getLocation(),
+                show.getPosterURL(),
+                show.getPrice(),
                 show.getCreatedAt()
         );
     }

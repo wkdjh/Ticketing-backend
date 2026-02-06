@@ -29,17 +29,21 @@ public class Show {
     private LocalDateTime startDateTime;
 
     @Column(nullable = false)
+    private LocalDateTime endDateTime;
+
+    @Column(nullable = false)
     private int price;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public Show(Long id, String title, String posterURL, String location, LocalDateTime startDateTime, int price, LocalDateTime createdAt) {
+    public Show(Long id, String title, String posterURL, String location, LocalDateTime startDateTime, LocalDateTime endDateTime, int price, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.posterURL = posterURL;
         this.location = location;
         this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         this.price = price;
         this.createdAt = createdAt;
     }
