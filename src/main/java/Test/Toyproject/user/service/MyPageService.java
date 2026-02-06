@@ -6,18 +6,15 @@ import Test.Toyproject.seats.entity.Seats;
 import Test.Toyproject.seats.repository.SeatRepository;
 import Test.Toyproject.show.entity.Show;
 import Test.Toyproject.show.repository.ShowRepository;
-import Test.Toyproject.user.dto.response.MyReservationDetailResponse;
 import Test.Toyproject.user.dto.response.MyReservedResponse;
 import Test.Toyproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -56,22 +53,6 @@ public class MyPageService {
         return showsOrdered.stream()
                 .filter(show -> seatsByShowId.containsKey(show.getId()))
                 .map(show -> MyReservedResponse.from(show, seatsByShowId.get(show.getId())))
-                .toList();
-    }
-
-    // 내가 예약한 공연 누르면 예약 정보(좌석) 확인
-    @Transactional(readOnly = true)
-    public List<MyReservationDetailResponse> getMyReservationsByShow(Long showId) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var userDetails = (CustomUserDetailsService.CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-
-        List<Reservation> reservations =
-                userRepository.findMyReservationsByShowId(userId, showId);
-
-        return reservations.stream()
-                .map(r -> MyReservationDetailResponse.from(r.getShow(), r.getSeats()))
                 .toList();
     }
 
