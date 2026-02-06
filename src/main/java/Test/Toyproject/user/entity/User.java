@@ -21,7 +21,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickName;
 
-
     public User() {}
 
     public User(String email, String password, String nickName) {

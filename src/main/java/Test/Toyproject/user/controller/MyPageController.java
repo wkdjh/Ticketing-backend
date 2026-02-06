@@ -19,13 +19,14 @@ import java.util.List;
 public class MyPageController {
 
     private final MyPageService myPageService;
-
+    // 내 예매 내역 조회
     @GetMapping()
     public ResponseEntity<ApiResponse<List<MyReservedResponse>>> getMyReservations() {
         List<MyReservedResponse> result = myPageService.getMyReserved();
         return ResponseEntity.ok(ApiResponse.ok("예매 내역 조회 성공", result));
     }
 
+    // 디테일한 예매 내역 정보
     @GetMapping("/{showId}")
     public ResponseEntity<ApiResponse<List<MyReservationDetailResponse>>> myReservationsByShow(
             @PathVariable Long showId
