@@ -28,4 +28,12 @@ public class Seats {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mid", nullable = false)
     private Show show;
+
+    public void take() {
+        this.seatStatus = SeatStatus.TAKEN;
+    }
+
+    public void release() {
+        this.seatStatus = SeatStatus.AVAILABLE;
+    }
 }

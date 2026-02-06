@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/show/auth/signup", "/show/auth/login", "/show/musical/**").permitAll()
+                        .requestMatchers("/show/reservations/seats", "/show/auth/signup", "/show/auth/login", "/show/musical/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
