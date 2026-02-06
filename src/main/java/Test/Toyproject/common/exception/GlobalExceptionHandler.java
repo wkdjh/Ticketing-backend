@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleAny(Exception ex) {
+        ex.printStackTrace();
         return ResponseEntity
                 .status(500)
                 .body(ApiResponse.fail("서버 오류가 발생했습니다."));

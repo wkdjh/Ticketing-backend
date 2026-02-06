@@ -2,6 +2,7 @@ package Test.Toyproject.reservation.controller;
 
 import Test.Toyproject.reservation.dto.ReservationRequestDto;
 import Test.Toyproject.reservation.dto.ReservationResponseDto;
+import Test.Toyproject.reservation.dto.cancelReserved;
 import Test.Toyproject.reservation.service.ReservationService;
 import Test.Toyproject.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +31,13 @@ public class ReservationController {
         return ResponseEntity.ok(new ReservationResponseDto(reservationId));
     }
 
-    @DeleteMapping("/{reservationId}")
-    public ResponseEntity<Void> cancel(
-            @PathVariable Long reservationId,
+    @DeleteMapping
+    public ResponseEntity<Void> cancelAll(
+            @RequestBody cancelReserved req,
             @AuthenticationPrincipal CustomUserDetailsService.CustomUserDetails userDetails
     ) {
-        Long uid = userDetails.getId();
-        reservationService.cancelReserved(reservationId, uid);
-        return ResponseEntity.noContent().build(); // ✅ 204 No Content
+        reservationService.cancelReserved(req.reservationIds(), userDetails.getId());
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -17,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -32,7 +34,7 @@ public class ReservationService {
         char row = requestDto.seatRow().charAt(0);
 
         Seats seat = seatRepository
-                .findByShowIdAndSeatRowAndSeatColumn(
+                .findByShow_IdAndSeatRowAndSeatColumn(
                         requestDto.mid(),
                         row,                    // ✅ char 전달
                         requestDto.seatColumn()
@@ -67,15 +69,29 @@ public class ReservationService {
     }
 
     @Transactional
-    public void cancelReserved(Long reservationId, Long uid) {
+    public void cancelReserved(List<Long> reservationIds, Long uid) {
 
-        Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, uid)
-                .orElseThrow(() -> new IllegalArgumentException("예약이 없거나 본인 예약이 아닙니다."));
+        if (reservationIds == null || reservationIds.isEmpty()) {
+            throw new IllegalArgumentException("취소할 예약이 없습니다.");
+        }
 
-        Seats seat = reservation.getSeats();
-        seat.release();
+        List<Reservation> reservations = reservationRepository.findAllByIdInAndUserId(reservationIds, uid);
 
-        reservationRepository.delete(reservation);
+        // 내 예약 아닌 id가 섞였거나, 이미 삭제된 id가 있으면 걸러짐 → 개수로 검증
+        if (reservations.size() != reservationIds.size()) {
+            throw new IllegalArgumentException("예약이 없거나 본인 예약이 아닌 항목이 포함되어 있습니다.");
+        }
+
+        // 좌석 원복
+        for (Reservation r : reservations) {
+            Seats seat = r.getSeats();
+            seat.release(); // AVAILABLE
+            // Seats가 Reservation에 의해 cascade로 저장되지 않는 구조면 seatRepository.save(seat) 해줘야 안전
+            // seatRepository.save(seat);
+        }
+
+        // 예약 삭제 (한방)
+        reservationRepository.deleteAll(reservations);
     }
 
 }
