@@ -31,25 +31,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     """)
     List<Show> findShowsOrderedByLatestReservation(@Param("userId") Long userId);
 
-    // 디테일한 예매 정보 가져오기
-    @Query("""
-        select r
-        from Reservation r
-        join fetch r.seats s
-        join fetch r.show sh
-        where r.user.id = :userId
-          and sh.id = :showId
-        order by r.id desc
-    """)
-    List<Reservation> findMyReservationsByShowId(
-            @Param("userId") Long userId,
-            @Param("showId") Long showId
-    );
-
-
-
-
-    // 이건 필요없나?
-//    Optional<User> findByNickName(String nickName);
-
 }
