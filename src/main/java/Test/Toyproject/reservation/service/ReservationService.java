@@ -69,13 +69,13 @@ public class ReservationService {
     @Transactional
     public void cancelReserved(Long reservationId, Long uid) {
 
-        Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, uid)
-                .orElseThrow(() -> new IllegalArgumentException("예약이 없거나 본인 예약이 아닙니다."));
+        Reservation r = reservationRepository.findOneWithAll(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("예약 없음"));
 
-        Seats seat = reservation.getSeats();
-        seat.release();
+        Long userId = r.getUser().getId();
+        Long showId = r.getShow().getId();
 
-        reservationRepository.delete(reservation);
+        reservationRepository.deleteByUser_IdAndShow_Id(userId, showId);
     }
 
 }

@@ -46,16 +46,13 @@ public class MyPageService {
         List<Reservation> reservations = reservationRepository.findByUserIdWithShowAndSeats(userId);
 
         // 3) showId 기준으로 seats 묶기
-        Map<Long, List<Seats>> seatsByShowId = reservations.stream()
-                .collect(Collectors.groupingBy(
-                        r -> r.getShow().getId(),
-                        Collectors.mapping(Reservation::getSeats, Collectors.toList())
-                ));
+        Map<Long, List<Reservation>> reservationsByShowId = reservations.stream()
+                .collect(Collectors.groupingBy(r -> r.getShow().getId()));
 
-        // 4) DTO 변환
+        // dto 변환
         return showsOrdered.stream()
-                .filter(show -> seatsByShowId.containsKey(show.getId()))
-                .map(show -> MyReservedResponse.from(show, seatsByShowId.get(show.getId())))
+                .filter(show -> reservationsByShowId.containsKey(show.getId()))
+                .map(show -> MyReservedResponse.from(show, reservationsByShowId.get(show.getId())))
                 .toList();
     }
 

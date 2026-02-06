@@ -29,4 +29,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
         where r.user.id = :userId
     """)
     List<Reservation> findByUserIdWithShowAndSeats(@Param("userId") Long userId);
+
+    // 내가 예매한 공연의 모든 예약,좌석 찾기
+    @Query("""
+        select r from Reservation r
+        join fetch r.show
+        join fetch r.user
+        join fetch r.seats
+        where r.id = :reservationId
+    """)
+    Optional<Reservation> findOneWithAll(@Param("reservationId") Long reservationId);
+
+    // 같은 유저 + 같은 공연의 예약 전부 삭제(한 번에)
+    long deleteByUser_IdAndShow_Id(Long userId, Long showId);
 }
