@@ -15,7 +15,7 @@ env:
   ECR_REPO_NAME: "backend"
   # 최종 이미지 URI = ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}
 
-  MANIFESTS_REPO: "<YOUR_ORG>/manifests-repo"
+  MANIFESTS_REPO: "wkdjh/manifests"
   MANIFEST_PATH: "apps/backend/overlays/dev/patch.yaml"
   CONTAINER_NAME: "backend"
 
