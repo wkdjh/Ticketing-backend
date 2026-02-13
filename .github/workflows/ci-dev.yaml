@@ -2,7 +2,7 @@ name: CI Build & Push (ECR) + Trigger ArgoCD CD (dev)
 
 on:
   push:
-    branches: ["main"]
+    branches: ["dev"]
   workflow_dispatch: {}
 
 permissions:
