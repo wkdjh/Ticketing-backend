@@ -36,12 +36,12 @@ public class ReservationService {
         Seats seat = seatRepository
                 .findByShow_IdAndSeatRowAndSeatColumn(
                         requestDto.mid(),
-                        row,                    // ✅ char 전달
+                        row,                    // char 전달
                         requestDto.seatColumn()
                 )
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
 
-        // ✅ DB seat_status 기준으로 먼저 검사
+        // DB seat_status 기준으로 먼저 검사
         if (seat.getSeatStatus() == SeatStatus.TAKEN) {
             throw new IllegalStateException("이미 예약된 좌석입니다.");
         }
@@ -52,20 +52,13 @@ public class ReservationService {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-        try {
-            // 좌석 상태 TAKEN으로 변경
-            seat.take();
+        // 좌석 상태 TAKEN으로 변경
+        seat.take();
 
-            // 예약 저장
-            Reservation saved = reservationRepository.save(
-                    Reservation.of(show, user, seat)
-            );
+        // 예약 저장
+        Reservation saved = reservationRepository.save(Reservation.of(show, user, seat));
 
-            return saved.getId();
-        } catch (DataIntegrityViolationException e) {
-            // 동시에 들어온 경우(유니크 제약 필요)
-            throw new IllegalStateException("이미 예약된 좌석입니다.");
-        }
+        return saved.getId();
     }
 
     @Transactional
