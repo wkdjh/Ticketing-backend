@@ -36,4 +36,9 @@ public class Seats {
     public void release() {
         this.seatStatus = SeatStatus.AVAILABLE;
     }
+
+    public void makeAvailable() {
+        this.seatStatus = SeatStatus.AVAILABLE;
+    }
+
 }
