@@ -18,7 +18,7 @@ public class Seats {
     private int seatColumn;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "seat_status")
     private SeatStatus seatStatus;
 
     // Show의 id랑 fk

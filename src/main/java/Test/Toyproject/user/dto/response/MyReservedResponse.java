@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record MyReservedResponse (
-    Long reservationId,
+    List<Long> reservationIds,
     String title,
     LocalDateTime startDateTime,
     String location,
@@ -18,21 +18,13 @@ public record MyReservedResponse (
     List<SeatInfoResponse> seats,
     int price
 ) {
-    public static MyReservedResponse from(Show show, List<Reservation> reservations) {
-        Long reservationId = reservations.stream()
-                .map(Reservation::getId)
-                .max(Long::compareTo)
-                .orElseThrow();
-
-        List<Seats> seatsList = reservations.stream()
-                .map(Reservation::getSeats)
-                .toList();
+    public static MyReservedResponse from(Show show, List<Long> reservationIds, List<Seats> seatsList) {
 
         int peopleCount = seatsList.size();
         int totalPrice = show.getPrice() * peopleCount;
 
         return new MyReservedResponse(
-                reservationId,
+                reservationIds,
                 show.getTitle(),
                 show.getStartDateTime(),
                 show.getLocation(),

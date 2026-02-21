@@ -39,17 +39,30 @@ public class MyPageService {
         // 1) 최신 예약 순으로 show 목록 (너가 이미 가지고 있는 쿼리)
         List<Show> showsOrdered = userRepository.findShowsOrderedByLatestReservation(userId);
 
-        // 2) 내 예약 전체 조회 (show + seats 까지 한 번에 가져오면 더 좋음)
+        // Reservation을 show+seats 같이 가져오는 쿼리(네가 이미 만든 거 유지)
         List<Reservation> reservations = reservationRepository.findByUserIdWithShowAndSeats(userId);
 
-        // 3) showId 기준으로 seats 묶기
-        Map<Long, List<Reservation>> reservationsByShowId = reservations.stream()
-                .collect(Collectors.groupingBy(r -> r.getShow().getId()));
+        // showId -> reservationIds
+        Map<Long, List<Long>> reservationIdsByShowId = reservations.stream()
+                .collect(Collectors.groupingBy(
+                        r -> r.getShow().getId(),
+                        Collectors.mapping(Reservation::getId, Collectors.toList())
+                ));
 
-        // dto 변환
+        // showId -> Seats list
+        Map<Long, List<Seats>> seatsByShowId = reservations.stream()
+                .collect(Collectors.groupingBy(
+                        r -> r.getShow().getId(),
+                        Collectors.mapping(Reservation::getSeats, Collectors.toList())
+                ));
+
         return showsOrdered.stream()
-                .filter(show -> reservationsByShowId.containsKey(show.getId()))
-                .map(show -> MyReservedResponse.from(show, reservationsByShowId.get(show.getId())))
+                .filter(show -> seatsByShowId.containsKey(show.getId()))
+                .map(show -> MyReservedResponse.from(
+                        show,
+                        reservationIdsByShowId.get(show.getId()),
+                        seatsByShowId.get(show.getId())
+                ))
                 .toList();
     }
 

@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface SeatRepository extends JpaRepository<Seats, Long> {
 
     // mid, seatRow, seatColumn으로 sid 찾기
-    Optional<Seats> findByShowIdAndSeatRowAndSeatColumn(Long mid, char seatRow, int seatColumn);
+    Optional<Seats> findByShow_IdAndSeatRowAndSeatColumn(Long mid, char seatRow, int seatColumn);
 
-    // 현재 좌석 정보 불러오기
+    // 현재 taken인 좌석 정보 불러오기
     List<Seats> findByShow_IdAndSeatStatus(Long showId, SeatStatus seatStatus);
 
 
